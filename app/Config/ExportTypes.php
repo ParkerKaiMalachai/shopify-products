@@ -6,14 +6,18 @@ namespace App\Config;
 
 use \Maatwebsite\Excel\Excel;
 
-final readonly class ExportTypes
+enum ExportTypes: string
 {
-    public static function all(): array
+    case CSV = 'csv';
+    case PDF = 'pdf';
+    case TXT = 'txt';
+
+    public function get(): string
     {
-        return [
-            'csv' => Excel::CSV,
-            'pdf' => Excel::TCPDF,
-            'txt' => Excel::CSV,
-        ];
+        return match ($this) {
+            self::CSV => Excel::CSV,
+            self::PDF => Excel::TCPDF,
+            self::TXT => Excel::CSV,
+        };
     }
 }

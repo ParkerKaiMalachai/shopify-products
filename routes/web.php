@@ -10,4 +10,4 @@ Route::get('/', function (): View {
     return view('welcome');
 });
 
-Route::post('/products/export/{type}', [ProductController::class, 'export']);
+Route::get('/products/export/{type}', [ProductController::class, 'export']);

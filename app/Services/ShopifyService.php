@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Exceptions\ShopifyException;
 use App\Interfaces\Services\ShopifyServiceInterface;
 use GuzzleHttp\Client;
+use Throwable;
 
 final class ShopifyService implements ShopifyServiceInterface
 {
-    public function __construct(protected Client $client)
-    {
-        $accessToken = config('shopify-app.access_token');
+    private Client $client;
 
+    public function __construct(string $baseUri, string $accessToken)
+    {
         $this->client = new Client([
-            'base_uri' => "https://irinasstoretest.myshopify.com/admin/api/2025-01/",
+            'base_uri' => $baseUri,
             'headers' => [
                 'Content-Type' => 'application/json',
                 'X-Shopify-Access-Token' => $accessToken,
@@ -24,7 +26,11 @@ final class ShopifyService implements ShopifyServiceInterface
 
     public function getProducts(): mixed
     {
-        $response = $this->client->get('products.json');
+        try {
+            $response = $this->client->get('products.json');
+        } catch (Throwable $e) {
+            throw new ShopifyException($e->getMessage());
+        }
 
         return json_decode($response->getBody()->getContents(), true);
     }

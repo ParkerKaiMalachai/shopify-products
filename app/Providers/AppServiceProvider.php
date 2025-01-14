@@ -10,11 +10,14 @@ use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
 {
-    public array $bindings = [
-        ShopifyServiceInterface::class => ShopifyService::class,
-    ];
-
-    public function register(): void {}
+    public function register(): void
+    {
+        $this->app->bind(
+            ShopifyServiceInterface::class,
+            fn() =>
+            new ShopifyService(config('shopify-app.base_uri'), config('shopify-app.access_token'))
+        );
+    }
 
     public function boot(): void {}
 }
