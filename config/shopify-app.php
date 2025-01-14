@@ -195,6 +195,7 @@ return [
 
     'api_scopes' => env('SHOPIFY_API_SCOPES', 'read_products,write_products,read_themes'),
     'access_token' => env('SHOPIFY_ACCESS_TOKEN', ''),
+    'base_uri' => env('SHOPIFY_BASE_URI', ''),
 
     /*
     |--------------------------------------------------------------------------
